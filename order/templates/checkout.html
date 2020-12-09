@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+<section class="navbar main-menu">
+    <div class="navbar-inner main-menu">				
+        <a href="{% url 'index' %}" class="logo pull-left"><img src="{% static 'themes/images/logo.png' %}" class="site_logo" alt=""></a>
+        <nav id="menu" class="pull-right">
+            <ul>
+                {% for category in category %}
+                <li><a href="./products.html">{{category.name}}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</section>
+{% endblock navbar %}
+{% block main-content %}
+    <div class="container">
+        <div class="col-12">
+            <h3>Your order</h3>
+            <ul>
+            {% for item in cart %}
+            <li>
+            {{ item.quantity }}x {{ item.product.name }}
+            <span>${{ item.total_price }}</span>
+            </li>
+            {% endfor %}
+            </ul>
+            <p>Total: ${{ cart.get_total_price }}</p>
+        </div>
+        <div class="col-12">
+        <form method="POST">
+            {{ form.as_p }}
+            <p><input type="submit" value="Place order"></p>
+            {% csrf_token %}
+        </form>
+    </div>
+{% endblock main-content %}
